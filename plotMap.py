@@ -1,27 +1,24 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib
-from mpl_toolkits.basemap import Basemap
-from typing import Union, Tuple
 from collections import namedtuple
-import scipy.interpolate as interpolate
+from typing import Union, Tuple
+
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
+from mpl_toolkits.basemap import Basemap
 
 plt.ioff()
 
-
-
-latlon=namedtuple("latlon",field_names=("lat", "lon"))
+latlon = namedtuple("latlon", field_names=("lat", "lon"))
 Integral = Union[int, float]
 
 
-def limitToRange(val: Integral, lim: Tuple[Integral, Integral])->Integral:
+def limitToRange(val: Integral, lim: Tuple[Integral, Integral]) -> Integral:
     return max(min(val, lim[1]), lim[0])
 
 
-def plotMap(data: np.ndarray, lat: Integral, lon: Integral, size: Integral=10) -> None:
-
-    llc = latlon(limitToRange(lat - size, (-90, 90)), limitToRange(lon - size, (-180, 180))) #lower left corner
-    urc = latlon(limitToRange(lat + size, (-90, 90)), limitToRange(lon + size, (-180, 180))) #upper right corner
+def plotMap(data: np.ndarray, lat: Integral, lon: Integral, size: Integral = 10) -> None:
+    llc = latlon(limitToRange(lat - size, (-90, 90)), limitToRange(lon - size, (-180, 180)))  # lower left corner
+    urc = latlon(limitToRange(lat + size, (-90, 90)), limitToRange(lon + size, (-180, 180)))  # upper right corner
     m = Basemap(projection='stere', lon_0=lon, lat_0=lat,
                 llcrnrlon=llc.lon, llcrnrlat=llc.lat, urcrnrlon=urc.lon, urcrnrlat=urc.lat, resolution='i')
 
@@ -38,7 +35,7 @@ def plotMap(data: np.ndarray, lat: Integral, lon: Integral, size: Integral=10) -
     plt.show()
 
 
-def plotGlobal(data:np.ndarray)->None:
+def plotGlobal(data: np.ndarray) -> None:
     lon, lat = np.meshgrid(np.linspace(-180, 180, 1024), np.linspace(-90, 90, 512))
     m = Basemap(projection='kav7', lon_0=0, lat_0=0, resolution='l')
     m.drawcoastlines(linewidth=0.4)
@@ -49,19 +46,6 @@ def plotGlobal(data:np.ndarray)->None:
     plt.show()
 
 
-def getInterpolator(data:np.ndarray) -> interpolate.RectBivariateSpline:
-    x = np.linspace(-180, 180, 1024)
-    y = np.linspace(-90, 90, 512)
-    # Not sure why this function seems to invert x and y, but hey, seems to work like this
-    return interpolate.RectBivariateSpline(y, x, data)
-
-
-def getProbabilityAt(data: np.ndarray, lat: Integral, lon: Integral)-> float:
-    interpolator = getInterpolator(data)
-    return interpolator(lat, lon)
-
-
 if __name__ == "__main__":
     dat = np.genfromtxt('nowcast.txt')
     plotMap(dat, 65, 26, size=10)
-    print(getProbabilityAt(dat, lat=65, lon=26))
