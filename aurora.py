@@ -27,20 +27,31 @@ def getInterpolator(data: np.ndarray) -> interpolate.RectBivariateSpline:
 
 def getProbabilityAt(data: np.ndarray, lat: Integral, lon: Integral) -> float:
     interpolator = getInterpolator(data)
-    return interpolator(lat, lon)
+    return float(interpolator(lat, lon))
 
+
+def getData():
+    content = getmap.getmap()
+    return np.genfromtxt(StringIO(content))
 
 # TODO serive that retrives and names data according to parsed date in a loop
 # TODO analyze history
-
-if __name__ == '__main__':
+def main(lat: float, lon: float, writeToFile=False, printOulu=True, printMax=True, plot=False):
     content = getmap.getmap()
-    date = getDate(content)
-    print(date)
-    with open(date, 'w') as f:
-        f.write(content)
+    if writeToFile:
+        date = getDate(content)
+        print(date)
+        with open(date, 'w') as f:
+            f.write(content)
 
     auroraData = np.genfromtxt(StringIO(content))
-    print("oulu: ", getProbabilityAt(auroraData, lat=65, lon=26))
-    print("max: ", auroraData.max())
-    # plotMap.plotMap(auroraData, 65, 26, size=17)
+    if printOulu:
+        print("oulu: ", getProbabilityAt(auroraData, lat=lat, lon=lon))
+    if printMax:
+        print("max: ", auroraData.max())
+    if plot:
+        plotMap.plotMap(auroraData, lat, lon, size=17)
+
+
+if __name__ == '__main__':
+    main(65, 26, writeToFile=False, printOulu=True, printMax=True, plot=False)
