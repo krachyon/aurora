@@ -12,7 +12,7 @@ def add_args_and_verify(parser: argparse.ArgumentParser):
 
     args = parser.parse_args()
 
-    assert args.interval <= 120, 'query interval too short, no DOSing NOAA plz'
+    assert args.interval <= 120, 'query interval {args.interval} too short, no DOSing NOAA plz'
     assert 0 <= args.threshold <= 100, f'{args.threshold} is not a valid percentage'
 
     return args
