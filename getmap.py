@@ -2,7 +2,7 @@ import requests
 
 
 def getmap(fname: str = None) -> str:
-    url = "http://services.swpc.noaa.gov/text/aurora-nowcast-map.txt"
+    url = "https://services.swpc.noaa.gov/text/aurora-nowcast-map.txt"
     r = requests.get(url)
 
     if r.status_code == 200:
