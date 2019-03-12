@@ -1,0 +1,17 @@
+[Unit]
+Description=Send notification about aurora viewing probability
+Requires=network-online.target
+
+[Service]
+Type=simple
+StandardOutput=journal
+StandardError=journal
+WorkingDirectory=/path/to/aurora/
+
+ExecStartPre=/bin/git pull
+ExecStart=python /path/to/aurora/gotify_notifier.py https://gotify.krachyon.de <token> <lat> <lon> <probab> <intervall> <Nregardless>
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
