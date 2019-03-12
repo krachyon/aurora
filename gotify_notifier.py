@@ -16,7 +16,7 @@ for i in itertools.count():
 
     probab = aurora.getProbabilityAt(aurora.getData(), args.latitude, args.longitude)
     if probab > args.threshold or (i and i % args.everyN == 0):
-        
+
         resp = requests.post(f'{args.base_url}/message?token={args.token}', json={
             "message": f"probability of visible aurora: {probab:.2f}%",
             "priority": 5000,

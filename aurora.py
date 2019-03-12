@@ -6,7 +6,6 @@ import numpy as np
 import scipy.interpolate as interpolate
 
 import getmap
-import plotMap
 
 Integral = Union[int, float]
 
@@ -50,6 +49,7 @@ def main(lat: float, lon: float, writeToFile=False, printOulu=True, printMax=Tru
     if printMax:
         print("max: ", auroraData.max())
     if plot:
+        import plotMap
         plotMap.plotMap(auroraData, lat, lon, size=17)
 
 
