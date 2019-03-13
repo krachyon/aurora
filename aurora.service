@@ -9,7 +9,7 @@ StandardError=journal
 WorkingDirectory=/path/to/aurora/
 
 ExecStartPre=/bin/git pull
-ExecStart=python /path/to/aurora/gotify_notifier.py https://gotify.krachyon.de <token> <lat> <lon> <probab> <intervall> <Nregardless>
+ExecStart=python /path/to/aurora/gotify_notifier.py https://your.server.tld <token> <lat> <lon> <probab> <intervall> <Nregardless>
 
 Restart=always
 
