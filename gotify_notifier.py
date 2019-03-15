@@ -4,6 +4,7 @@ import requests
 import argparse
 import cli_common
 import itertools
+import sys
 
 parser = argparse.ArgumentParser('gotify_notifier')
 
@@ -16,6 +17,7 @@ for i in itertools.count():
 
     probab = aurora.getProbabilityAt(aurora.getData(), args.latitude, args.longitude)
     print(probab)
+    sys.stdout.flush()
     if probab > args.threshold or (args.everyN and i % args.everyN == 0):
 
         resp = requests.post(f'{args.base_url}/message?token={args.token}', json={
