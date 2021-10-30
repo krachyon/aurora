@@ -14,7 +14,7 @@ notify2.init("kde")
 # infinite loop
 for i in itertools.count():
 
-    probab = aurora.getProbabilityAt(aurora.getData(), args.latitude, args.longitude)
+    probab = aurora.get_probability_at(aurora.getData(), args.latitude, args.longitude)
     if probab > args.threshold or (i and i % args.everyN == 0):
         n = notify2.Notification("Aurora!",
                                  f"Probability: {probab}",

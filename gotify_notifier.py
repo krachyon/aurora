@@ -15,7 +15,7 @@ args = cli_common.add_args_and_verify(parser)
 # infinite loop
 for i in itertools.count():
 
-    probab = aurora.getProbabilityAt(aurora.getData(), args.latitude, args.longitude)
+    probab = aurora.get_probability_at(aurora.getData(), args.latitude, args.longitude)
     print(f"{probab:.2f}")
     sys.stdout.flush()
     if probab > args.threshold or (args.everyN and i % args.everyN == 0):

@@ -1,8 +1,11 @@
 import requests
+import numpy as np
+from numpy.lib.recfunctions import unstructured_to_structured
+import json
 
 
-def getmap(fname: str = None) -> str:
-    url = "https://services.swpc.noaa.gov/text/aurora-nowcast-map.txt"
+def get_content(fname: str = None) -> np.ndarray:
+    url = "https://services.swpc.noaa.gov/json/ovation_aurora_latest.json"
     r = requests.get(url)
 
     if r.status_code == 200:
@@ -12,4 +15,10 @@ def getmap(fname: str = None) -> str:
     else:
         raise IOError('fail')
 
-    return r.text
+    parsed = (json.loads(r.text))
+    return parsed
+
+
+def get_data(content):
+    dtype = np.dtype([('lon', int), ('lat', int), ('aurora', int)])
+    array = unstructured_to_structured(np.array(content['coordinates']), dtype=dtype)
