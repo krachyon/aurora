@@ -22,3 +22,4 @@ def get_content(fname: str = None) -> np.ndarray:
 def get_data(content):
     dtype = np.dtype([('lon', int), ('lat', int), ('aurora', int)])
     array = unstructured_to_structured(np.array(content['coordinates']), dtype=dtype)
+    return array

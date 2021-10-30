@@ -16,7 +16,7 @@ def limitToRange(val: Integral, lim: Tuple[Integral, Integral]) -> Integral:
     return max(min(val, lim[1]), lim[0])
 
 
-def plotMap(data: np.ndarray, lat: Integral, lon: Integral, size: Integral = 10) -> None:
+def plot_map(data: np.ndarray, lat: Integral, lon: Integral, size: Integral = 10) -> None:
     llc = latlon(limitToRange(lat - size, (-90, 90)), limitToRange(lon - size, (-180, 180)))  # lower left corner
     urc = latlon(limitToRange(lat + size, (-90, 90)), limitToRange(lon + size, (-180, 180)))  # upper right corner
     m = Basemap(projection='stere', lon_0=lon, lat_0=lat,
@@ -25,8 +25,8 @@ def plotMap(data: np.ndarray, lat: Integral, lon: Integral, size: Integral = 10)
     m.drawcoastlines(linewidth=0.4)
     m.drawcountries(linewidth=0.4)
 
-    lon, lat = np.meshgrid(np.linspace(-180, 180, 1024), np.linspace(-90, 90, 512))
-    mesh = m.pcolormesh(lon, lat, data, latlon=True, cmap=plt.cm.jet, vmin=0, vmax=100)
+    shape = (len(np.unique(data['lon'])), len(np.unique(data['lat'])))
+    mesh = m.pcolormesh(data['lon'], data['lat'], data['aurora'], latlon=True, cmap=plt.cm.jet, vmin=0, vmax=100)
     m.colorbar(mesh, "right", size="4%", pad='1%')
     fig = matplotlib.pyplot.gcf()
     fig.set_size_inches(16, 16)
@@ -48,4 +48,4 @@ def plotGlobal(data: np.ndarray) -> None:
 
 if __name__ == "__main__":
     dat = np.genfromtxt('nowcast.txt')
-    plotMap(dat, 65, 26, size=10)
+    plot_map(dat, 65, 26, size=10)

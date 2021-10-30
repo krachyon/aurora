@@ -15,7 +15,6 @@ def get_date(inp: dict) -> str:
     return inp["Observation Time"]
 
 
-@functools.lru_cache(maxsize=10)
 def get_interpolator(data: np.ndarray) -> interpolate.SmoothBivariateSpline:
     return interpolate.SmoothBivariateSpline(data['lat'], data['lon'], data['aurora'])
 
@@ -27,7 +26,7 @@ def get_probability_at(data: np.ndarray, lat: Integral, lon: Integral) -> float:
 
 # TODO serive that retrives and names data according to parsed date in a loop
 # TODO analyze history
-def main(lat: float, lon: float, writeToFile=False, printOulu=True, printMax=True, plot=False):
+def main(lat: float, lon: float, writeToFile=False, printLocation=True, printMax=True, plot=False):
     content = getmap.get_content()
     aurora_data = getmap.get_data(content)
 
@@ -36,14 +35,14 @@ def main(lat: float, lon: float, writeToFile=False, printOulu=True, printMax=Tru
         print(date)
         np.savetxt(date, aurora_data)
 
-    if printOulu:
-        print("oulu: ", get_probability_at(aurora_data, lat=lat, lon=lon))
+    if printLocation:
+        print("Location: ", get_probability_at(aurora_data, lat=lat, lon=lon))
     if printMax:
-        print("max: ", aurora_data.max())
+        print("max: ", aurora_data['aurora'].max())
     if plot:
         import plotMap
-        plotMap.plotMap(aurora_data, lat, lon, size=17)
+        plotMap.plot_map(aurora_data, lat, lon, size=17)
 
 
 if __name__ == '__main__':
-    main(49, 8.6, writeToFile=False, printOulu=True, printMax=True, plot=False)
+    main(49, 8.6, writeToFile=False, printLocation=True, printMax=True, plot=False)
